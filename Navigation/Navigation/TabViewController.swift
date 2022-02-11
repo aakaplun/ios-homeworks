@@ -12,10 +12,30 @@ class TabViewController: UITabBarController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .systemBackground
+        UITabBar.appearance().barTintColor = .systemBackground
+        tabBar.tintColor = .label
+        setupViewController()
     }
     
+    private func createNavController(for rootViewController: UIViewController,
+                                     title: String,
+                                     image: UIImage) -> UIViewController {
+        let navController = UINavigationController(rootViewController: rootViewController)
+        navController.tabBarItem.title = title
+        navController.tabBarItem.image = image
+        navController.navigationBar.prefersLargeTitles = true
+        rootViewController.navigationItem.title = title
+        
+        return navController
+      }
+    
+    private func setupViewController() {
+          viewControllers = [
+              createNavController(for: FeedViewController(), title: "Лента", image: UIImage(systemName: "tray")!),
+              createNavController(for: ProfileViewController(), title: "Профиль", image: UIImage(systemName: "person")!)
+          ]
+      }
 
     /*
     // MARK: - Navigation
