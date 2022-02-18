@@ -13,35 +13,32 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let profileHeaderView = ProfileHeaderView(frame: self.view.frame)
+        let profileHeaderView = ProfileHeaderView(frame: .zero)
+        
         self.view.addSubview(profileHeaderView)
         profileHeaderView.backgroundColor = .lightGray
-        
         profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
         let margins = self.view.safeAreaLayoutGuide
         let topConstraint = profileHeaderView.topAnchor.constraint(equalTo: margins.topAnchor)
-        let bottomConstraint = profileHeaderView.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
+        //let bottomConstraint = profileHeaderView.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
         let leadingConstraint = profileHeaderView.leadingAnchor.constraint(equalTo: margins.leadingAnchor)
         let trailingConstraint = profileHeaderView.trailingAnchor.constraint(equalTo: margins.trailingAnchor)
-        NSLayoutConstraint.activate([topConstraint, bottomConstraint, leadingConstraint, trailingConstraint])
-
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
+        let hightConstraint = profileHeaderView.heightAnchor.constraint(equalToConstant: 220)
+        NSLayoutConstraint.activate([topConstraint, leadingConstraint, trailingConstraint, hightConstraint])
         
+        // Непонятная кнопочка...
+        let button = UIButton()
+        button.layer.cornerRadius = 4
+        button.backgroundColor = .systemBlue
+        button.titleLabel?.textColor = .white
+        button.setTitle("Button", for: .normal)
+        button.translatesAutoresizingMaskIntoConstraints = false
 
+        self.view.addSubview(button)
+        let buttonLeadingConstraint = button.leadingAnchor.constraint(equalTo: margins.leadingAnchor)
+        let buttonTrailingConstraint = button.trailingAnchor.constraint(equalTo: margins.trailingAnchor)
+        let buttonHeightContraint = button.heightAnchor.constraint(equalToConstant: 50)
+        let buttonBottomConstraint = button.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
+        NSLayoutConstraint.activate([buttonLeadingConstraint, buttonTrailingConstraint, buttonHeightContraint, buttonBottomConstraint])
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
