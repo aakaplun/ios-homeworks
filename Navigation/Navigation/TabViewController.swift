@@ -32,8 +32,9 @@ class TabViewController: UITabBarController {
     
     private func setupViewController() {
           viewControllers = [
-              createNavController(for: FeedViewController(), title: "Лента", image: UIImage(systemName: "tray")!),
-              createNavController(for: ProfileViewController(), title: "Профиль", image: UIImage(systemName: "person")!)
+            createNavController(for: FeedViewController(), title: "Лента", image: UIImage(systemName: "tray")!),
+//              createNavController(for: ProfileViewController(), title: "Профиль", image: UIImage(systemName: "person")!)
+            createNavController(for: LogInViewController(), title: "Профиль", image: UIImage(systemName: "person")!)
           ]
       }
 
