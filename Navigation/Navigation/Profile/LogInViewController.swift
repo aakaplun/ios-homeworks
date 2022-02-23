@@ -13,6 +13,7 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.contentSize = self.view.bounds.size
+        scrollView.contentSize.height = 506
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
     }()
@@ -23,19 +24,39 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
         return contentView
     }()
     
+    private lazy var logoImageView: UIImageView = {
+        let logoImageView = UIImageView(image: #imageLiteral(resourceName: "logo.png"))
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        return logoImageView
+    }()
+    
+    private lazy var loginTableView: UITableView = {
+        let loginTableView = UITableView()
+        loginTableView.estimatedRowHeight = 50
+        loginTableView.layer.borderColor = UIColor.lightGray.cgColor
+        loginTableView.layer.borderWidth = 0.5
+        loginTableView.layer.cornerRadius = 10
+        loginTableView.delegate = self
+        loginTableView.dataSource = self
+        //loginTableView.register(UITableViewCell.self, forCellReuseIdentifier: "DefaultCell")
+        loginTableView.alwaysBounceVertical = false
+        loginTableView.translatesAutoresizingMaskIntoConstraints = false
+        return loginTableView
+    }()
+    
+    let colorSet = UIColor(hexString: "4885CC")
+
     private lazy var loginButton: UIButton = {
         let button = UIButton()
         button.titleLabel?.textColor = .white
         button.setTitle("Log In", for: .normal)
         button.layer.cornerRadius = 10
-        button.backgroundColor = .systemBlue
+        button.backgroundColor = colorSet
         button.addTarget(self, action: #selector(loginButtonPressed), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    let colorSet = UIColor(hexString: "#4885CC")
-
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -44,11 +65,8 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(contentView)
         
-        setupConstraints()
         setupContentView()
-    }
-    
-    private func setupConstraints() {
+        
         let margins = view.safeAreaLayoutGuide
         
         let scrollViewLeadingConstraint = scrollView.leadingAnchor.constraint(equalTo: margins.leadingAnchor)
@@ -59,8 +77,8 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
         let contentViewTopConstraint = self.contentView.topAnchor.constraint(equalTo: self.scrollView.topAnchor)
         let contentViewCenterXConstraint = self.contentView.centerXAnchor.constraint(equalTo: self.scrollView.centerXAnchor)
         let contentViewWidthConstraint = self.contentView.widthAnchor.constraint(equalTo: self.scrollView.widthAnchor)
-        let contentViewHeightConstraint = self.contentView.heightAnchor.constraint(equalTo: self.scrollView.heightAnchor)
-
+        let contentViewHeightConstraint = self.contentView.heightAnchor.constraint(equalToConstant: 506)
+        
         NSLayoutConstraint.activate([
             scrollViewLeadingConstraint, scrollViewTrailingConstraint,
             scrollViewTopConstraint, scrollViewBottonConstraint,
@@ -70,19 +88,6 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     private func setupContentView() {
-        let logoImageView = UIImageView(image: #imageLiteral(resourceName: "logo.png"))
-        logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let loginTableView = UITableView()
-        loginTableView.estimatedRowHeight = 50
-        loginTableView.layer.borderColor = UIColor.lightGray.cgColor
-        loginTableView.layer.borderWidth = 0.5
-        loginTableView.layer.cornerRadius = 10
-        loginTableView.delegate = self
-        loginTableView.dataSource = self
-        loginTableView.register(UITableViewCell.self, forCellReuseIdentifier: "DefaultCell")
-        loginTableView.translatesAutoresizingMaskIntoConstraints = false
-        
         contentView.addSubview(logoImageView)
         contentView.addSubview(loginTableView)
         contentView.addSubview(loginButton)
@@ -101,7 +106,7 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
         let loginButtonTopConstraint = loginButton.topAnchor.constraint(equalTo: loginTableView.bottomAnchor, constant: 16)
         let loginButtonLeadingConstraint = loginButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
         let loginButtonTrailingConstraint = loginButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
-
+        
         NSLayoutConstraint.activate([
             logoImageViewHeightConstraint, logoImageViewWidthConstraint,
             logoImageViewCenterXConstraint, logoImageViewTopConstraint,
@@ -171,6 +176,10 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
     }
 
     @objc func loginButtonPressed(_ button: UIButton) {
+        loginTableView.resignFirstResponder()
+        let profileViewController = ProfileViewController()
+        profileViewController.modalPresentationStyle = .automatic
+        self.present(profileViewController, animated: true, completion: nil)
     }
 
 }
