@@ -49,12 +49,12 @@ class ProfileHeaderView: UIView {
         statusField.layer.borderColor = UIColor.black.cgColor
         statusField.returnKeyType = UIReturnKeyType.done
         statusField.clearButtonMode = UITextField.ViewMode.whileEditing
-        statusField.text = statusLabel.text
+        statusField.text = "" //statusLabel.text
         statusField.translatesAutoresizingMaskIntoConstraints = false
 
         statusField.addTarget(self, action: #selector(statusFieldDidBeginEditing), for: .editingDidBegin)
         statusField.addTarget(self, action: #selector(statusFieldDidEndEditing), for: .editingDidEnd)
-        statusField.addTarget(self, action: #selector(statusFieldTextChanged), for: .editingChanged)
+        //statusField.addTarget(self, action: #selector(statusFieldTextChanged), for: .editingChanged)
         statusField.addTarget(self, action: #selector(statusFieldEditingDidEndOnExit), for: .editingDidEndOnExit)
         return statusField
     }()
@@ -116,7 +116,8 @@ class ProfileHeaderView: UIView {
         self.addSubview(statusButton)
         
         status = .isGet
-        self.setStatusButton()
+        statusButton.backgroundColor = .systemBlue
+        //self.setStatusButton()
 
         let margins = self.safeAreaLayoutGuide
         let photoViewHeightConstraint = photoView.heightAnchor.constraint(equalToConstant: 100)
@@ -152,6 +153,15 @@ class ProfileHeaderView: UIView {
             statusButtonLeadingConstraint, statusButtonTrailingConstraint
             ].compactMap({ $0 }))
         setStatusButtonTopConstraint()
+        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        self.addGestureRecognizer(tapGesture)
+
+    }
+    
+    @objc func viewTapped() {
+        statusField.text = ""
+        statusField.resignFirstResponder()
     }
     
     @objc func statusButtonPressed(_ button: UIButton) {
@@ -167,33 +177,34 @@ class ProfileHeaderView: UIView {
     // statusField Actions
     @objc func statusFieldDidBeginEditing(_ textField: UITextField) {
         status = .isSet
-        self.setStatusButton()
+        //self.setStatusButton()
     }
     
     @objc func statusFieldDidEndEditing(_ textField: UITextField) {
-        guard let text = textField.text else {
-            return
+        if let text = textField.text, !text.isEmpty {
+            statusText = text
+            textField.text = ""
+            statusLabel.text = text
         }
-        statusLabel.text = text
         status = .isGet
     }
-    
+/*
     @objc func statusFieldTextChanged(_ textField: UITextField) {
         self.setStatusButton()
         statusText = textField.text ?? ""
     }
-    
+*/
     @objc func statusFieldEditingDidEndOnExit(_ textField: UITextField) {
         textField.resignFirstResponder()
         setStatusButtonTopConstraint()
     }
-    
+/*
     private func setStatusButton() {
         let isEnabled = !(statusField.text == "") || status == .isGet
         statusButton.isEnabled = isEnabled
         statusButton.backgroundColor = isEnabled ? .systemBlue : .lightGray
     }
-    
+*/
     private func setStatusButtonTopConstraint() {
         NSLayoutConstraint.deactivate([statusButtonTopConstraint].compactMap({ $0 }))
         switch status {
