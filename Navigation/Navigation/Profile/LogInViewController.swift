@@ -87,6 +87,9 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
         ])
 
         registerForNotifications()
+        
+        //let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
+        //self.view.addGestureRecognizer(tapGesture)
     }
     
     override func viewDidLayoutSubviews() {
@@ -94,9 +97,9 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
         setScrollViewInset()
     }
     
-    private func setScrollViewInset() {
-        let inset = contentView.bounds.size.height - scrollView.bounds.size.height
-        if inset > 0 {
+    private func setScrollViewInset(inset: CGFloat = 0) {
+        let inset = contentView.bounds.size.height - scrollView.bounds.size.height + inset
+        if inset >= 0 {
             scrollView.setContentOffset(CGPoint(x: 0, y: inset), animated: true)
         }
     }
@@ -204,21 +207,11 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
     @objc func keyboardDidShown(notification: NSNotification) {
         let info = notification.userInfo
         if let keyboardRect = info?[UIResponder.keyboardFrameBeginUserInfoKey] as? CGRect {
-            let keyboardSize = keyboardRect.size
-            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
-            scrollView.scrollIndicatorInsets = scrollView.contentInset
-            //let contentOffsetY = keyboardSize.height
-            //scrollView.contentOffset = CGPoint(x: 0, y: contentOffsetY)
-            //scrollView.setContentOffset(CGPoint(x: 0, y: contentOffsetY), animated: true)
-            //setScrollViewInset()
-            print(keyboardSize)
+            self.setScrollViewInset(inset: keyboardRect.size.height)
         }
     }
 
     @objc func keyboardDidHide(notification: NSNotification) {
-        scrollView.contentInset = .zero
-        scrollView.scrollIndicatorInsets = scrollView.contentInset
-        //setScrollViewInset()
-        //scrollView.contentOffset = .zero
+        self.setScrollViewInset()
     }
 }
