@@ -85,8 +85,22 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
             contentViewTopConstraint, contentViewCenterXConstraint,
             contentViewWidthConstraint, contentViewHeightConstraint
         ])
-    }
 
+        registerForNotifications()
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        setScrollViewInset()
+    }
+    
+    private func setScrollViewInset() {
+        let inset = contentView.bounds.size.height - scrollView.bounds.size.height
+        if inset > 0 {
+            scrollView.setContentOffset(CGPoint(x: 0, y: inset), animated: true)
+        }
+    }
+    
     private func setupContentView() {
         contentView.addSubview(logoImageView)
         contentView.addSubview(loginTableView)
@@ -139,7 +153,6 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.autocapitalizationType = .none
-        //textField.tintColor = accentColor
         textField.isSecureTextEntry = indexPath.row == 1
         textField.text = ""
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -181,5 +194,31 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
         profileViewController.modalPresentationStyle = .automatic
         self.present(profileViewController, animated: true, completion: nil)
     }
+    
+    func registerForNotifications() {
+        let notificationCenter = NotificationCenter.default
+        notificationCenter.addObserver(self, selector: #selector(keyboardDidShown(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        notificationCenter.addObserver(self, selector: #selector(keyboardDidHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc func keyboardDidShown(notification: NSNotification) {
+        let info = notification.userInfo
+        if let keyboardRect = info?[UIResponder.keyboardFrameBeginUserInfoKey] as? CGRect {
+            let keyboardSize = keyboardRect.size
+            scrollView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: keyboardSize.height, right: 0)
+            scrollView.scrollIndicatorInsets = scrollView.contentInset
+            //let contentOffsetY = keyboardSize.height
+            //scrollView.contentOffset = CGPoint(x: 0, y: contentOffsetY)
+            //scrollView.setContentOffset(CGPoint(x: 0, y: contentOffsetY), animated: true)
+            //setScrollViewInset()
+            print(keyboardSize)
+        }
+    }
 
+    @objc func keyboardDidHide(notification: NSNotification) {
+        scrollView.contentInset = .zero
+        scrollView.scrollIndicatorInsets = scrollView.contentInset
+        //setScrollViewInset()
+        //scrollView.contentOffset = .zero
+    }
 }
