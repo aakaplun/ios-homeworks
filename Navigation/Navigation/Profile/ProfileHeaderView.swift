@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProfileHeaderView: UIView {
+class ProfileHeaderView: UITableViewHeaderFooterView {
 
     lazy var avatarImageView: UIImageView = {
         let photoView = UIImageView(image: #imageLiteral(resourceName: "cat.png"))
@@ -97,16 +97,21 @@ class ProfileHeaderView: UIView {
     
     private var statusText: String = ""
     
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        viewInit()
+    }
+/*
     override init(frame: CGRect) {
         super.init(frame: frame)
         viewInit()
     }
-    
+ */
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         viewInit()
     }
-    
+  
     private func viewInit() {
 
         self.addSubview(avatarImageView)
@@ -138,7 +143,7 @@ class ProfileHeaderView: UIView {
         let statusFieldTrailingConstraint = statusTextField.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
  
         let statusButtonHeightConstraint = setStatusButton.heightAnchor.constraint(equalToConstant: 50)
-        //let statusButtonTopConstraint = setStatusButton.topAnchor.constraint(equalTo: statusField.bottomAnchor, constant: 16)
+        let statusButtonBottonConstraint = setStatusButton.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -16)
         let statusButtonLeadingConstraint = setStatusButton.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 16)
         let statusButtonTrailingConstraint = setStatusButton.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
 
@@ -148,8 +153,8 @@ class ProfileHeaderView: UIView {
                                      statusLabelLeadingConstraint, statusLabelTopAncor, statusLabelTrailingConstraint,
                                      statusFieldHeightConstraint, statusFieldTopConstraint,
                                      statusFieldLeadingConstraint, statusFieldTrailingConstraint,
-                                     statusButtonHeightConstraint,
-            statusButtonLeadingConstraint, statusButtonTrailingConstraint
+                                     statusButtonHeightConstraint, statusButtonBottonConstraint,
+                                     statusButtonLeadingConstraint, statusButtonTrailingConstraint
             ].compactMap({ $0 }))
         setStatusButtonTopConstraint()
     }
