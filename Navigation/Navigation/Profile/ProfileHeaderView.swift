@@ -10,7 +10,7 @@ import UIKit
 
 class ProfileHeaderView: UIView {
 
-    lazy var photoView: UIImageView = {
+    lazy var avatarImageView: UIImageView = {
         let photoView = UIImageView(image:  #imageLiteral(resourceName: "cat.png"))
         photoView.layer.borderColor = UIColor.white.cgColor
         photoView.layer.borderWidth = 3
@@ -20,7 +20,7 @@ class ProfileHeaderView: UIView {
         return photoView
     }()
     
-    lazy var textLabel: UILabel = {
+    lazy var fullNameLabel: UILabel = {
         let textLabel = UILabel()
         textLabel.text = "Hipster Cat"
         textLabel.font = UIFont.boldSystemFont(ofSize: 18)
@@ -38,7 +38,7 @@ class ProfileHeaderView: UIView {
         return statusLabel
     }()
     
-    lazy var statusField: TextField = {
+    lazy var statusTextField: TextField = {
         let statusField = TextField()
         statusField.placeholder = "Введите текст"
         statusField.backgroundColor = .white
@@ -59,7 +59,7 @@ class ProfileHeaderView: UIView {
         return statusField
     }()
     
-    lazy var statusButton: UIButton = {
+    lazy var setStatusButton: UIButton = {
         let statusButton = UIButton()
         statusButton.titleLabel?.textColor = .white
         statusButton.layer.cornerRadius = 4
@@ -81,8 +81,8 @@ class ProfileHeaderView: UIView {
     
     private var status: Status = .isGet {
         didSet {
-            statusButton.setTitle(statusButtonText, for: .normal)
-            statusField.isHidden = status == .isGet
+            setStatusButton.setTitle(statusButtonText, for: .normal)
+            statusTextField.isHidden = status == .isGet
         }
     }
     
@@ -109,39 +109,39 @@ class ProfileHeaderView: UIView {
     
     private func viewInit() {
 
-        self.addSubview(photoView)
-        self.addSubview(textLabel)
+        self.addSubview(avatarImageView)
+        self.addSubview(fullNameLabel)
         self.addSubview(statusLabel)
-        self.addSubview(statusField)
-        self.addSubview(statusButton)
+        self.addSubview(statusTextField)
+        self.addSubview(setStatusButton)
         
         status = .isGet
         statusButton.backgroundColor = .systemBlue
         //self.setStatusButton()
 
         let margins = self.safeAreaLayoutGuide
-        let photoViewHeightConstraint = photoView.heightAnchor.constraint(equalToConstant: 100)
-        let photoViewWidthConstraint = photoView.widthAnchor.constraint(equalToConstant: 100)
-        let photoViewLeadingConstraint = photoView.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 16)
-        let photViewTopConstraint = photoView.topAnchor.constraint(equalTo: margins.topAnchor, constant: 16)
+        let photoViewHeightConstraint = avatarImageView.heightAnchor.constraint(equalToConstant: 100)
+        let photoViewWidthConstraint = avatarImageView.widthAnchor.constraint(equalToConstant: 100)
+        let photoViewLeadingConstraint = avatarImageView.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 16)
+        let photViewTopConstraint = avatarImageView.topAnchor.constraint(equalTo: margins.topAnchor, constant: 16)
         
-        let textLabelLeadingConstraint = textLabel.leadingAnchor.constraint(equalTo: photoView.trailingAnchor, constant: 20)
-        let textLabelTopConstraint = textLabel.topAnchor.constraint(equalTo: margins.topAnchor, constant: 27)
-        let textLabelTrailingConstraint = textLabel.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
+        let textLabelLeadingConstraint = fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 20)
+        let textLabelTopConstraint = fullNameLabel.topAnchor.constraint(equalTo: margins.topAnchor, constant: 27)
+        let textLabelTrailingConstraint = fullNameLabel.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
 
-        let statusLabelLeadingConstraint = statusLabel.leadingAnchor.constraint(equalTo: photoView.trailingAnchor, constant: 20)
-        let statusLabelTopAncor = statusLabel.topAnchor.constraint(equalTo: textLabel.bottomAnchor, constant: 27)
+        let statusLabelLeadingConstraint = statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 20)
+        let statusLabelTopAncor = statusLabel.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 27)
         let statusLabelTrailingConstraint = statusLabel.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
         
-        let statusFieldHeightConstraint = statusField.heightAnchor.constraint(equalToConstant: 40)
-        let statusFieldTopConstraint = statusField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 16)
-        let statusFieldLeadingConstraint = statusField.leadingAnchor.constraint(equalTo: photoView.trailingAnchor, constant: 20)
-        let statusFieldTrailingConstraint = statusField.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
+        let statusFieldHeightConstraint = statusTextField.heightAnchor.constraint(equalToConstant: 40)
+        let statusFieldTopConstraint = statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 16)
+        let statusFieldLeadingConstraint = statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 20)
+        let statusFieldTrailingConstraint = statusTextField.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
  
-        let statusButtonHeightConstraint = statusButton.heightAnchor.constraint(equalToConstant: 50)
-        //let statusButtonTopConstraint = statusButton.topAnchor.constraint(equalTo: statusField.bottomAnchor, constant: 16)
-        let statusButtonLeadingConstraint = statusButton.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 16)
-        let statusButtonTrailingConstraint = statusButton.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
+        let statusButtonHeightConstraint = setStatusButton.heightAnchor.constraint(equalToConstant: 50)
+        //let statusButtonTopConstraint = setStatusButton.topAnchor.constraint(equalTo: statusField.bottomAnchor, constant: 16)
+        let statusButtonLeadingConstraint = setStatusButton.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 16)
+        let statusButtonTrailingConstraint = setStatusButton.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
 
         NSLayoutConstraint.activate([photoViewHeightConstraint, photoViewWidthConstraint,
                                      photoViewLeadingConstraint, photViewTopConstraint,
@@ -167,9 +167,9 @@ class ProfileHeaderView: UIView {
     @objc func statusButtonPressed(_ button: UIButton) {
         switch status {
         case .isSet:
-            statusField.resignFirstResponder()
+            statusTextField.resignFirstResponder()
         case .isGet:
-            statusField.becomeFirstResponder()
+            statusTextField.becomeFirstResponder()
         }
         setStatusButtonTopConstraint()
     }
@@ -190,7 +190,7 @@ class ProfileHeaderView: UIView {
     }
 /*
     @objc func statusFieldTextChanged(_ textField: UITextField) {
-        self.setStatusButton()
+        self.setStatusButtonEnabled()
         statusText = textField.text ?? ""
     }
 */
@@ -209,23 +209,23 @@ class ProfileHeaderView: UIView {
         NSLayoutConstraint.deactivate([statusButtonTopConstraint].compactMap({ $0 }))
         switch status {
         case .isGet:
-            statusButtonTopConstraint = statusButton.topAnchor.constraint(equalTo: photoView.bottomAnchor, constant: 16)
+            statusButtonTopConstraint = setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 16)
         case .isSet:
-            statusButtonTopConstraint = statusButton.topAnchor.constraint(equalTo: statusField.bottomAnchor, constant: 16)
+            statusButtonTopConstraint = setStatusButton.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: 16)
         }
         NSLayoutConstraint.activate([statusButtonTopConstraint].compactMap({ $0 }))
     }
-}
-
-class TextField: UITextField {
-    let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 15)
-    override open func textRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
-    }
-    override open func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
-    }
-    override open func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return bounds.inset(by: padding)
+    
+    class TextField: UITextField {
+        let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 15)
+        override open func textRect(forBounds bounds: CGRect) -> CGRect {
+            return bounds.inset(by: padding)
+        }
+        override open func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+            return bounds.inset(by: padding)
+        }
+        override open func editingRect(forBounds bounds: CGRect) -> CGRect {
+            return bounds.inset(by: padding)
+        }
     }
 }
