@@ -28,7 +28,6 @@ class PhotosTableViewCell: UITableViewCell {
     private lazy var arrowImageView: UIImageView = {
         let image = UIImage(systemName: "arrow.right")
         let imageView = UIImageView(image: image)
-        imageView.contentMode = .scaleAspectFit
         imageView.tintColor = .black
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -44,7 +43,7 @@ class PhotosTableViewCell: UITableViewCell {
         let stackView = UIStackView()
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
-        stackView.alignment = .center
+        stackView.alignment = .leading
         stackView.spacing = 8
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
@@ -56,7 +55,7 @@ class PhotosTableViewCell: UITableViewCell {
         let trailingConstraint = self.stackView.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -12)
         let height = (self.contentView.bounds.width - 48) / 4
         let heightContraint = self.stackView.heightAnchor.constraint(equalToConstant: height)
-        let bottomContraint = self.stackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor)
+        let bottomContraint = self.stackView.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -12)
         return [topContraint, leadingConstraint, trailingConstraint, heightContraint, bottomContraint]
     }
     
@@ -66,8 +65,8 @@ class PhotosTableViewCell: UITableViewCell {
             let name = "Photo" + String(i)
             let image = UIImage(named: name)
             let imageView = UIImageView(image: image)
-            imageView.contentMode = .scaleToFill
             imageView.layer.cornerRadius = 6
+            imageView.clipsToBounds = true
             imageViews.append(imageView)
         }
         return imageViews
@@ -87,7 +86,7 @@ class PhotosTableViewCell: UITableViewCell {
         self.contentView.addSubview(self.arrowImageView)
         self.contentView.addSubview(self.stackView)
         self.photoImageViews.forEach { (imageView) in
-            self.stackView.addSubview(imageView)
+            self.stackView.addArrangedSubview(imageView)
         }
         
         let photosLabelConstraints = self.photosLabelConstraints()
@@ -96,5 +95,4 @@ class PhotosTableViewCell: UITableViewCell {
         
         NSLayoutConstraint.activate(photosLabelConstraints + arrowImageViewConstraints + stackViewConstraints)
     }
-
 }

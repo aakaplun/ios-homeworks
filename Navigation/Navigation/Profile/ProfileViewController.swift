@@ -98,12 +98,12 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         }
         return view
     }
-/*
-    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        print(section)
-        guard let headerView = tableView.headerView(forSection: section) else {
-            return 200
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if indexPath.section == 0, let navController = navigationController {
+            let photosViewController = PhotosViewController()
+            navController.pushViewController(photosViewController, animated: true)
         }
-        return headerView.bounds.height
-    }*/
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 }
