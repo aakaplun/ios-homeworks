@@ -116,7 +116,7 @@ class ProfileHeaderView: UIView {
         self.addSubview(setStatusButton)
         
         status = .isGet
-        statusButton.backgroundColor = .systemBlue
+        setStatusButton.backgroundColor = .systemBlue
         //self.setStatusButton()
 
         let margins = self.safeAreaLayoutGuide
@@ -160,8 +160,8 @@ class ProfileHeaderView: UIView {
     }
     
     @objc func viewTapped() {
-        statusField.text = ""
-        statusField.resignFirstResponder()
+        statusTextField.text = ""
+        statusTextField.resignFirstResponder()
     }
     
     @objc func statusButtonPressed(_ button: UIButton) {
