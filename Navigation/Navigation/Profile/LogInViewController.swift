@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SwiftUI
 
-final class LogInViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+final class LogInViewController: UIViewController {
 
     private lazy var scrollView: UIScrollView = {
         let scrollView = UIScrollView()
@@ -29,21 +30,46 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
         return logoImageView
     }()
-    
-    private lazy var loginTableView: UITableView = {
-        let loginTableView = UITableView()
-        loginTableView.estimatedRowHeight = 50
-        loginTableView.layer.borderColor = UIColor.lightGray.cgColor
-        loginTableView.layer.borderWidth = 0.5
-        loginTableView.layer.cornerRadius = 10
-        loginTableView.delegate = self
-        loginTableView.dataSource = self
-        //loginTableView.register(UITableViewCell.self, forCellReuseIdentifier: "DefaultCell")
-        loginTableView.alwaysBounceVertical = false
-        loginTableView.translatesAutoresizingMaskIntoConstraints = false
-        return loginTableView
+        
+    private lazy var loginTextField: UITextField = {
+        let textField = PaddingTextField(withLeftInset: 20)
+        textField.backgroundColor = .systemGray6
+        textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.layer.borderWidth = 0.5
+        textField.layer.maskedCorners = [.layerMaxXMinYCorner, .layerMinXMinYCorner]
+        textField.layer.cornerRadius = 10
+        textField.textColor = .black
+        textField.placeholder = "Email or phone"
+        textField.font = UIFont.systemFont(ofSize: 16)
+        textField.returnKeyType = UIReturnKeyType.done
+        textField.clearButtonMode = UITextField.ViewMode.whileEditing
+        textField.autocapitalizationType = .none
+        textField.text = ""
+        textField.addTarget(self, action: #selector(self.textFieldEditingDidEndOnExit), for: .editingDidEndOnExit)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
     }()
-    
+
+    private lazy var passwordTextField: UITextField = {
+        let textField = PaddingTextField(withLeftInset: 20)
+        textField.backgroundColor = .systemGray6
+        textField.layer.borderColor = UIColor.lightGray.cgColor
+        textField.layer.borderWidth = 0.5
+        textField.layer.maskedCorners = [.layerMaxXMaxYCorner, .layerMinXMaxYCorner]
+        textField.layer.cornerRadius = 10
+        textField.textColor = .black
+        textField.placeholder = "Password"
+        textField.font = UIFont.systemFont(ofSize: 16)
+        textField.returnKeyType = UIReturnKeyType.done
+        textField.clearButtonMode = UITextField.ViewMode.whileEditing
+        textField.autocapitalizationType = .none
+        textField.isSecureTextEntry = true
+        textField.text = ""
+        textField.addTarget(self, action: #selector(self.textFieldEditingDidEndOnExit), for: .editingDidEndOnExit)
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
+
     let colorSet = UIColor(hexString: "4885CC")
 
     private lazy var loginButton: UIButton = {
@@ -106,7 +132,8 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
     
     private func setupContentView() {
         contentView.addSubview(logoImageView)
-        contentView.addSubview(loginTableView)
+        contentView.addSubview(loginTextField)
+        contentView.addSubview(passwordTextField)
         contentView.addSubview(loginButton)
         
         let logoImageViewHeightConstraint = logoImageView.heightAnchor.constraint(equalToConstant: 100)
@@ -114,85 +141,39 @@ final class LogInViewController: UIViewController, UITableViewDelegate, UITableV
         let logoImageViewCenterXConstraint = logoImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor)
         let logoImageViewTopConstraint = logoImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 120)
         
-        let loginTableViewHeightConstraint = loginTableView.heightAnchor.constraint(equalToConstant: 100)
-        let loginTableViewTopConstraint = loginTableView.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 120)
-        let loginTableViewLeadingConstraint = loginTableView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
-        let loginTableViewTrailingConstraint = loginTableView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+        let loginTextFieldHeightConstraint = loginTextField.heightAnchor.constraint(equalToConstant: 50)
+        let loginTextFieldTopConstraint = loginTextField.topAnchor.constraint(equalTo: logoImageView.bottomAnchor, constant: 120)
+        let loginTextFieldLeadingConstraint = loginTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+        let loginTextFieldTrailingConstraint = loginTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
+
+        let passwordTextFieldHeightConstraint = passwordTextField.heightAnchor.constraint(equalToConstant: 50)
+        let passwordTextFieldTopConstraint = passwordTextField.topAnchor.constraint(equalTo: loginTextField.bottomAnchor, constant: -0.5)
+        let passwordTextFieldLeadingConstraint = passwordTextField.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
+        let passwordTextFieldTrailingConstraint = passwordTextField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         
         let loginButtonHeightConsytaint = loginButton.heightAnchor.constraint(equalToConstant: 50)
-        let loginButtonTopConstraint = loginButton.topAnchor.constraint(equalTo: loginTableView.bottomAnchor, constant: 16)
+        let loginButtonTopConstraint = loginButton.topAnchor.constraint(equalTo: passwordTextField.bottomAnchor, constant: 16)
         let loginButtonLeadingConstraint = loginButton.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16)
         let loginButtonTrailingConstraint = loginButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -16)
         
         NSLayoutConstraint.activate([
             logoImageViewHeightConstraint, logoImageViewWidthConstraint,
             logoImageViewCenterXConstraint, logoImageViewTopConstraint,
-            loginTableViewHeightConstraint, loginTableViewTopConstraint,
-            loginTableViewLeadingConstraint, loginTableViewTrailingConstraint,
+            loginTextFieldHeightConstraint, loginTextFieldTopConstraint,
+            loginTextFieldLeadingConstraint, loginTextFieldTrailingConstraint,
+            passwordTextFieldHeightConstraint, passwordTextFieldTopConstraint,
+            passwordTextFieldLeadingConstraint, passwordTextFieldTrailingConstraint,
             loginButtonHeightConsytaint, loginButtonTopConstraint,
             loginButtonLeadingConstraint, loginButtonTrailingConstraint
         ])
 
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2
-    }
-    
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        50
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        //let cell = tableView.dequeueReusableCell(withIdentifier: "DefaultCell", for: indexPath)
-        let cell = UITableViewCell()
         
-        let textField = PaddingTextField(withLeftInset: 20)
-        textField.backgroundColor = .lightGray
-        textField.textColor = .black
-        textField.placeholder = indexPath.row == 0 ? "Email or phone" : "Password"
-        textField.tag = indexPath.row
-        textField.font = UIFont.systemFont(ofSize: 16)
-        textField.returnKeyType = UIReturnKeyType.done
-        textField.clearButtonMode = UITextField.ViewMode.whileEditing
-        textField.autocapitalizationType = .none
-        textField.isSecureTextEntry = indexPath.row == 1
-        textField.text = ""
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        
-        cell.addSubview(textField)
-        
-        let topConstraint = textField.topAnchor.constraint(equalTo: cell.topAnchor)
-        let bottomConstraint = textField.bottomAnchor.constraint(equalTo: cell.bottomAnchor)
-        let leadingConstraint = textField.leadingAnchor.constraint(equalTo: cell.leadingAnchor)
-        let trailingConstraint = textField.trailingAnchor.constraint(equalTo: cell.trailingAnchor)
-        NSLayoutConstraint.activate([
-            topConstraint, bottomConstraint, leadingConstraint, trailingConstraint
-        ])
-        
-        textField.addTarget(self, action: #selector(textFieldDidBeginEditing), for: .editingDidBegin)
-        textField.addTarget(self, action: #selector(textFieldDidEndEditing), for: .editingDidEnd)
-        textField.addTarget(self, action: #selector(textFieldTextChanged), for: .editingChanged)
-        textField.addTarget(self, action: #selector(textFieldEditingDidEndOnExit), for: .editingDidEndOnExit)
-
-        return cell
-    }
-    
-    @objc func textFieldDidBeginEditing(_ textField: UITextField) {
-    }
-    
-    @objc func textFieldDidEndEditing(_ textField: UITextField) {
-    }
-    
-    @objc func textFieldTextChanged(_ textField: UITextField) {
-    }
-    
     @objc func textFieldEditingDidEndOnExit(_ textField: UITextField) {
         textField.resignFirstResponder()
     }
 
     @objc func loginButtonPressed(_ button: UIButton) {
-        loginTableView.resignFirstResponder()
         let profileViewController = ProfileViewController()
         profileViewController.modalPresentationStyle = .automatic
         self.present(profileViewController, animated: true, completion: nil)
