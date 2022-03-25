@@ -9,6 +9,8 @@
 import UIKit
 
 class ProfileHeaderView: UITableViewHeaderFooterView {
+    
+    var delegate: ProfileViewController?
 
     lazy var avatarImageView: UIImageView = {
         let photoView = UIImageView(image: #imageLiteral(resourceName: "cat.png"))
@@ -144,6 +146,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
  
         let statusButtonHeightConstraint = setStatusButton.heightAnchor.constraint(equalToConstant: 50)
         let statusButtonBottonConstraint = setStatusButton.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -16)
+        statusButtonBottonConstraint.priority = .defaultLow
         let statusButtonLeadingConstraint = setStatusButton.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 16)
         let statusButtonTrailingConstraint = setStatusButton.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
 
@@ -166,7 +169,10 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         case .isGet:
             statusTextField.becomeFirstResponder()
         }
+        self.delegate?.isHeaderViewExpanded = status == .isSet
+        self.delegate?.tableView.beginUpdates()
         setStatusButtonTopConstraint()
+        self.delegate?.tableView.endUpdates()
     }
     
     // statusField Actions
@@ -190,7 +196,10 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     
     @objc func statusFieldEditingDidEndOnExit(_ textField: UITextField) {
         textField.resignFirstResponder()
+        self.delegate?.isHeaderViewExpanded = status == .isSet
+        self.delegate?.tableView.beginUpdates()
         setStatusButtonTopConstraint()
+        self.delegate?.tableView.endUpdates()
     }
     
     private func setStatusButtonEnabled() {

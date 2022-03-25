@@ -15,7 +15,7 @@ final class ProfileViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
         tableView.sectionHeaderHeight = UITableView.automaticDimension
-        tableView.estimatedSectionHeaderHeight = 200
+        tableView.estimatedSectionHeaderHeight = 198
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(PostTableViewCell.self, forCellReuseIdentifier: "PostTableViewCell")
@@ -23,6 +23,8 @@ final class ProfileViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
+    
+    var isHeaderViewExpanded = false
     
     lazy var posts: [Post] = {
         var posts = [Post]()
@@ -81,18 +83,15 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         if section > 0 {return nil}
-        //let view = ProfileHeaderView()
-        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ProfileHeaderView") else {
+        guard let view = tableView.dequeueReusableHeaderFooterView(withIdentifier: "ProfileHeaderView") as? ProfileHeaderView else {
             return nil
         }
+        view.delegate = self
         return view
     }
-/*
+
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        print(section)
-        guard let headerView = tableView.headerView(forSection: section) else {
-            return 200
-        }
-        return headerView.bounds.height
-    }*/
+        return self.isHeaderViewExpanded ? 230 : 198
+    }
+
 }
