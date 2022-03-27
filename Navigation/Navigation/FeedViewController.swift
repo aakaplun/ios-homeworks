@@ -8,13 +8,14 @@
 
 import UIKit
 
+/*
 struct Post {
     var title: String
 }
-
+*/
 class FeedViewController: UIViewController {
 
-    let post = Post(title: "Пост")
+    let post = "Пост" //Post(title: "Пост")
     
     override func viewDidLoad() {
         super.viewDidLoad()

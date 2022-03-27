@@ -8,7 +8,9 @@
 
 import UIKit
 
-class ProfileHeaderView: UIView {
+class ProfileHeaderView: UITableViewHeaderFooterView {
+    
+    var delegate: ProfileViewController?
 
     lazy var avatarImageView: UIImageView = {
         let photoView = UIImageView(image: #imageLiteral(resourceName: "cat.png"))
@@ -97,16 +99,21 @@ class ProfileHeaderView: UIView {
     
     private var statusText: String = ""
     
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+        viewInit()
+    }
+/*
     override init(frame: CGRect) {
         super.init(frame: frame)
         viewInit()
     }
-    
+ */
     required init?(coder: NSCoder) {
         super.init(coder: coder)
         viewInit()
     }
-    
+  
     private func viewInit() {
 
         self.addSubview(avatarImageView)
@@ -139,7 +146,8 @@ class ProfileHeaderView: UIView {
         let statusFieldTrailingConstraint = statusTextField.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
  
         let statusButtonHeightConstraint = setStatusButton.heightAnchor.constraint(equalToConstant: 50)
-        //let statusButtonTopConstraint = setStatusButton.topAnchor.constraint(equalTo: statusField.bottomAnchor, constant: 16)
+        let statusButtonBottonConstraint = setStatusButton.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -16)
+        statusButtonBottonConstraint.priority = .defaultLow
         let statusButtonLeadingConstraint = setStatusButton.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 16)
         let statusButtonTrailingConstraint = setStatusButton.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
 
@@ -149,8 +157,8 @@ class ProfileHeaderView: UIView {
                                      statusLabelLeadingConstraint, statusLabelTopAncor, statusLabelTrailingConstraint,
                                      statusFieldHeightConstraint, statusFieldTopConstraint,
                                      statusFieldLeadingConstraint, statusFieldTrailingConstraint,
-                                     statusButtonHeightConstraint,
-            statusButtonLeadingConstraint, statusButtonTrailingConstraint
+                                     statusButtonHeightConstraint, statusButtonBottonConstraint,
+                                     statusButtonLeadingConstraint, statusButtonTrailingConstraint
             ].compactMap({ $0 }))
         setStatusButtonTopConstraint()
         
@@ -171,7 +179,10 @@ class ProfileHeaderView: UIView {
         case .isGet:
             statusTextField.becomeFirstResponder()
         }
+        self.delegate?.isHeaderViewExpanded = status == .isSet
+        self.delegate?.tableView.beginUpdates()
         setStatusButtonTopConstraint()
+        self.delegate?.tableView.endUpdates()
     }
     
     // statusField Actions
@@ -196,7 +207,10 @@ class ProfileHeaderView: UIView {
 */
     @objc func statusFieldEditingDidEndOnExit(_ textField: UITextField) {
         textField.resignFirstResponder()
+        self.delegate?.isHeaderViewExpanded = status == .isSet
+        self.delegate?.tableView.beginUpdates()
         setStatusButtonTopConstraint()
+        self.delegate?.tableView.endUpdates()
     }
 /*
     private func setStatusButton() {

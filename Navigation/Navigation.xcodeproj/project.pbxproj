@@ -12,6 +12,8 @@
 		6F11E71927B53A3100FBF893 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F11E71827B53A3100FBF893 /* FeedViewController.swift */; };
 		6F11E71B27B53A4500FBF893 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F11E71A27B53A4500FBF893 /* ProfileViewController.swift */; };
 		6F401F9B27C244AE009643AC /* LogInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F401F9A27C244AE009643AC /* LogInViewController.swift */; };
+		6F56587827D4C79D001AE1D2 /* PostTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F56587727D4C79D001AE1D2 /* PostTableViewCell.swift */; };
+		6F56587A27D4CC97001AE1D2 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F56587927D4CC97001AE1D2 /* Post.swift */; };
 		6F8F3A7927B7F15A0009650F /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F8F3A7827B7F15A0009650F /* ProfileHeaderView.swift */; };
 		6F9BD17B27B5259400FA5793 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F9BD17A27B5259400FA5793 /* AppDelegate.swift */; };
 		6F9BD17D27B5259400FA5793 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F9BD17C27B5259400FA5793 /* SceneDelegate.swift */; };
@@ -30,6 +32,8 @@
 		6F11E71827B53A3100FBF893 /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		6F11E71A27B53A4500FBF893 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		6F401F9A27C244AE009643AC /* LogInViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogInViewController.swift; sourceTree = "<group>"; };
+		6F56587727D4C79D001AE1D2 /* PostTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostTableViewCell.swift; sourceTree = "<group>"; };
+		6F56587927D4CC97001AE1D2 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		6F8F3A7827B7F15A0009650F /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		6F9BD17727B5259400FA5793 /* Navigation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Navigation.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6F9BD17A27B5259400FA5793 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -58,6 +62,7 @@
 		6F8F3A7727B7F1200009650F /* Profile */ = {
 			isa = PBXGroup;
 			children = (
+				6F56587927D4CC97001AE1D2 /* Post.swift */,
 				6F11E71A27B53A4500FBF893 /* ProfileViewController.swift */,
 				6F8F3A7827B7F15A0009650F /* ProfileHeaderView.swift */,
 				6F401F9A27C244AE009643AC /* LogInViewController.swift */,
@@ -65,6 +70,7 @@
 				6FD3267C27C2817D00C48564 /* PaddingTextField.swift */,
 				6FE7DCE527C25645003AFF9B /* cat.png */,
 				6FE7DCE727C2565A003AFF9B /* logo.png */,
+				6F56587727D4C79D001AE1D2 /* PostTableViewCell.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -178,6 +184,7 @@
 				6FD3267D27C2817D00C48564 /* PaddingTextField.swift in Sources */,
 				6F9BD18F27B527E300FA5793 /* TabViewController.swift in Sources */,
 				6F401F9B27C244AE009643AC /* LogInViewController.swift in Sources */,
+				6F56587A27D4CC97001AE1D2 /* Post.swift in Sources */,
 				6F9BD17B27B5259400FA5793 /* AppDelegate.swift in Sources */,
 				6F09238227B668E7006E5C14 /* InfoViewController.swift in Sources */,
 				6F11E71B27B53A4500FBF893 /* ProfileViewController.swift in Sources */,
@@ -185,6 +192,7 @@
 				6FE7DCEA27C25732003AFF9B /* UIColor+extension.swift in Sources */,
 				6F9BD17D27B5259400FA5793 /* SceneDelegate.swift in Sources */,
 				6F8F3A7927B7F15A0009650F /* ProfileHeaderView.swift in Sources */,
+				6F56587827D4C79D001AE1D2 /* PostTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,7 +10,8 @@ import UIKit
 
 class PostViewController: UIViewController {
 
-    var post = Post(title: "")
+    //var post = Post(title: "")
+    var post = ""
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +22,7 @@ class PostViewController: UIViewController {
         self.view.addSubview(navBar)
         
         let navItem = UINavigationItem()
-        navItem.title = self.post.title
+        navItem.title = self.post //.title
         navItem.rightBarButtonItem = UIBarButtonItem(title: "Инфо", style: .plain, target: self, action: #selector(infoButtonAction))
         navBar.setItems([navItem], animated: true)
     }
