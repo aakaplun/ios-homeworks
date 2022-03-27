@@ -123,7 +123,8 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         self.addSubview(setStatusButton)
         
         status = .isGet
-        setStatusButton.backgroundColor = .systemBlue
+        self.setStatusButtonEnabled()
+        //statusButton.backgroundColor = .systemBlue
         //self.setStatusButton()
 
         let margins = self.safeAreaLayoutGuide
@@ -168,8 +169,8 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }
     
     @objc func viewTapped() {
-        statusTextField.text = ""
-        statusTextField.resignFirstResponder()
+        self.statusTextField.text = ""
+        self.statusTextField.resignFirstResponder()
     }
     
     @objc func statusButtonPressed(_ button: UIButton) {
@@ -188,6 +189,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     // statusField Actions
     @objc func statusFieldDidBeginEditing(_ textField: UITextField) {
         status = .isSet
+        self.setStatusButtonEnabled()
         //self.setStatusButton()
     }
     
@@ -211,6 +213,12 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         self.delegate?.tableView.beginUpdates()
         setStatusButtonTopConstraint()
         self.delegate?.tableView.endUpdates()
+    }
+    
+    private func setStatusButtonEnabled() {
+        let isEnabled = !(statusTextField.text == "") || status == .isGet
+        setStatusButton.isEnabled = isEnabled
+        setStatusButton.backgroundColor = isEnabled ? .systemBlue : .lightGray
     }
 /*
     private func setStatusButton() {
