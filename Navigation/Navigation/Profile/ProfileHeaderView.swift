@@ -192,6 +192,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     @objc func statusFieldTextChanged(_ textField: UITextField) {
         self.setStatusButtonEnabled()
         statusText = textField.text ?? ""
+        textField.enablesReturnKeyAutomatically = textField.text != ""
     }
     
     @objc func statusFieldEditingDidEndOnExit(_ textField: UITextField) {
