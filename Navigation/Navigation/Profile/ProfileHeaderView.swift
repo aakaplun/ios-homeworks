@@ -101,17 +101,12 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
-        viewInit()
+        self.viewInit()
     }
-/*
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        viewInit()
-    }
- */
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
-        viewInit()
+        self.viewInit()
     }
   
     private func viewInit() {
@@ -122,10 +117,8 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         self.addSubview(statusTextField)
         self.addSubview(setStatusButton)
         
-        status = .isGet
+        self.status = .isGet
         self.setStatusButtonEnabled()
-        //statusButton.backgroundColor = .systemBlue
-        //self.setStatusButton()
 
         let margins = self.safeAreaLayoutGuide
         let photoViewHeightConstraint = avatarImageView.heightAnchor.constraint(equalToConstant: 100)
@@ -161,7 +154,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
                                      statusButtonHeightConstraint, statusButtonBottonConstraint,
                                      statusButtonLeadingConstraint, statusButtonTrailingConstraint
             ].compactMap({ $0 }))
-        setStatusButtonTopConstraint()
+        self.setStatusButtonTopConstraint()
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         self.addGestureRecognizer(tapGesture)
@@ -182,24 +175,23 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         }
         self.delegate?.isHeaderViewExpanded = status == .isSet
         self.delegate?.tableView.beginUpdates()
-        setStatusButtonTopConstraint()
+        self.setStatusButtonTopConstraint()
         self.delegate?.tableView.endUpdates()
     }
     
     // statusField Actions
     @objc func statusFieldDidBeginEditing(_ textField: UITextField) {
-        status = .isSet
+        self.status = .isSet
         self.setStatusButtonEnabled()
-        //self.setStatusButton()
     }
     
     @objc func statusFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text, !text.isEmpty {
-            statusText = text
+            self.statusText = text
             textField.text = ""
-            statusLabel.text = text
+            self.statusLabel.text = text
         }
-        status = .isGet
+        self.status = .isGet
     }
 /*
     @objc func statusFieldTextChanged(_ textField: UITextField) {
@@ -211,30 +203,24 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         textField.resignFirstResponder()
         self.delegate?.isHeaderViewExpanded = status == .isSet
         self.delegate?.tableView.beginUpdates()
-        setStatusButtonTopConstraint()
+        self.setStatusButtonTopConstraint()
         self.delegate?.tableView.endUpdates()
     }
     
     private func setStatusButtonEnabled() {
         let isEnabled = !(statusTextField.text == "") || status == .isGet
-        setStatusButton.isEnabled = isEnabled
-        setStatusButton.backgroundColor = isEnabled ? .systemBlue : .lightGray
+        self.setStatusButton.isEnabled = isEnabled
+        self.setStatusButton.backgroundColor = isEnabled ? .systemBlue : .lightGray
     }
-/*
-    private func setStatusButton() {
-        let isEnabled = !(statusField.text == "") || status == .isGet
-        statusButton.isEnabled = isEnabled
-        statusButton.backgroundColor = isEnabled ? .systemBlue : .lightGray
-    }
-*/
+
     private func setStatusButtonTopConstraint() {
         NSLayoutConstraint.deactivate([statusButtonTopConstraint].compactMap({ $0 }))
-        switch status {
+        switch self.status {
         case .isGet:
-            statusButtonTopConstraint = setStatusButton.topAnchor.constraint(equalTo: avatarImageView.bottomAnchor, constant: 16)
+            self.statusButtonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: 16)
         case .isSet:
-            statusButtonTopConstraint = setStatusButton.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: 16)
+            self.statusButtonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.statusTextField.bottomAnchor, constant: 16)
         }
-        NSLayoutConstraint.activate([statusButtonTopConstraint].compactMap({ $0 }))
+        NSLayoutConstraint.activate([self.statusButtonTopConstraint].compactMap({ $0 }))
     }
 }

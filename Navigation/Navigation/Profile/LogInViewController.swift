@@ -91,7 +91,7 @@ final class LogInViewController: UIViewController {
         self.view.addSubview(scrollView)
         self.scrollView.addSubview(contentView)
         
-        setupContentView()
+        self.setupContentView()
         
         let margins = view.safeAreaLayoutGuide
         
@@ -112,7 +112,7 @@ final class LogInViewController: UIViewController {
             contentViewWidthConstraint, contentViewHeightConstraint
         ])
 
-        registerForNotifications()
+        self.registerForNotifications()
         
         //let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
         //self.view.addGestureRecognizer(tapGesture)
