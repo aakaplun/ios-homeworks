@@ -11,7 +11,7 @@ import UIKit
 class ProfileHeaderView: UIView {
 
     lazy var avatarImageView: UIImageView = {
-        let photoView = UIImageView(image:  #imageLiteral(resourceName: "cat.png"))
+        let photoView = UIImageView(image: #imageLiteral(resourceName: "cat.png"))
         photoView.layer.borderColor = UIColor.white.cgColor
         photoView.layer.borderWidth = 3
         photoView.layer.cornerRadius = 50
@@ -38,8 +38,8 @@ class ProfileHeaderView: UIView {
         return statusLabel
     }()
     
-    lazy var statusTextField: TextField = {
-        let statusField = TextField()
+    lazy var statusTextField: PaddingTextField = {
+        let statusField = PaddingTextField()
         statusField.placeholder = "Введите текст"
         statusField.backgroundColor = .white
         statusField.font = UIFont.systemFont(ofSize: 15)
@@ -214,18 +214,5 @@ class ProfileHeaderView: UIView {
             statusButtonTopConstraint = setStatusButton.topAnchor.constraint(equalTo: statusTextField.bottomAnchor, constant: 16)
         }
         NSLayoutConstraint.activate([statusButtonTopConstraint].compactMap({ $0 }))
-    }
-    
-    class TextField: UITextField {
-        let padding = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 15)
-        override open func textRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        override open func placeholderRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
-        override open func editingRect(forBounds bounds: CGRect) -> CGRect {
-            return bounds.inset(by: padding)
-        }
     }
 }
