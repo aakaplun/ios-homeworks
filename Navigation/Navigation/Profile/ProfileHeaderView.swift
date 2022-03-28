@@ -51,12 +51,12 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         statusField.layer.borderColor = UIColor.black.cgColor
         statusField.returnKeyType = UIReturnKeyType.done
         statusField.clearButtonMode = UITextField.ViewMode.whileEditing
-        statusField.text = "" //statusLabel.text
+        statusField.text = statusLabel.text
         statusField.translatesAutoresizingMaskIntoConstraints = false
 
         statusField.addTarget(self, action: #selector(statusFieldDidBeginEditing), for: .editingDidBegin)
         statusField.addTarget(self, action: #selector(statusFieldDidEndEditing), for: .editingDidEnd)
-        //statusField.addTarget(self, action: #selector(statusFieldTextChanged), for: .editingChanged)
+        statusField.addTarget(self, action: #selector(statusFieldTextChanged), for: .editingChanged)
         statusField.addTarget(self, action: #selector(statusFieldEditingDidEndOnExit), for: .editingDidEndOnExit)
         return statusField
     }()
@@ -126,17 +126,17 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         let photoViewLeadingConstraint = avatarImageView.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 16)
         let photViewTopConstraint = avatarImageView.topAnchor.constraint(equalTo: margins.topAnchor, constant: 16)
         
-        let textLabelLeadingConstraint = fullNameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 20)
+        let textLabelLeadingConstraint = fullNameLabel.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 136)
         let textLabelTopConstraint = fullNameLabel.topAnchor.constraint(equalTo: margins.topAnchor, constant: 27)
         let textLabelTrailingConstraint = fullNameLabel.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
 
-        let statusLabelLeadingConstraint = statusLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 20)
+        let statusLabelLeadingConstraint = statusLabel.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 136)
         let statusLabelTopAncor = statusLabel.topAnchor.constraint(equalTo: fullNameLabel.bottomAnchor, constant: 27)
         let statusLabelTrailingConstraint = statusLabel.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
         
         let statusFieldHeightConstraint = statusTextField.heightAnchor.constraint(equalToConstant: 40)
         let statusFieldTopConstraint = statusTextField.topAnchor.constraint(equalTo: statusLabel.bottomAnchor, constant: 16)
-        let statusFieldLeadingConstraint = statusTextField.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 20)
+        let statusFieldLeadingConstraint = statusTextField.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 136)
         let statusFieldTrailingConstraint = statusTextField.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
  
         let statusButtonHeightConstraint = setStatusButton.heightAnchor.constraint(equalToConstant: 50)
@@ -156,14 +156,24 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
             ].compactMap({ $0 }))
         self.setStatusButtonTopConstraint()
         
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(viewTapped))
-        self.addGestureRecognizer(tapGesture)
-
+        [self, self.avatarImageView].forEach {
+            $0.isUserInteractionEnabled = true
+            $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(self.handleTapGesture(_:))))
+        }
     }
-    
-    @objc func viewTapped() {
-        self.statusTextField.text = ""
+        
+    @objc private func handleTapGesture(_ gestureRecognizer: UITapGestureRecognizer) {
+        guard gestureRecognizer.view === self else {
+            guard gestureRecognizer.view === self.avatarImageView else {return}
+            // Avatar tapped
+            print("Avatar tapped")
+            return
+        }
+        // View tapped
+        if self.status == .isGet {return}
+        self.statusTextField.text = self.statusLabel.text
         self.statusTextField.resignFirstResponder()
+        self.setStatusButtonEnabled()
     }
     
     @objc func statusButtonPressed(_ button: UIButton) {
@@ -173,54 +183,56 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         case .isGet:
             statusTextField.becomeFirstResponder()
         }
-        self.delegate?.isHeaderViewExpanded = status == .isSet
-        self.delegate?.tableView.beginUpdates()
-        self.setStatusButtonTopConstraint()
-        self.delegate?.tableView.endUpdates()
     }
     
     // statusField Actions
     @objc func statusFieldDidBeginEditing(_ textField: UITextField) {
         self.status = .isSet
         self.setStatusButtonEnabled()
+        self.updateTableView()
     }
     
     @objc func statusFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text, !text.isEmpty {
             self.statusText = text
-            textField.text = ""
+            //textField.text = ""
             self.statusLabel.text = text
         }
         self.status = .isGet
+        self.updateTableView()
     }
-/*
+
     @objc func statusFieldTextChanged(_ textField: UITextField) {
         self.setStatusButtonEnabled()
         statusText = textField.text ?? ""
     }
-*/
+
     @objc func statusFieldEditingDidEndOnExit(_ textField: UITextField) {
         textField.resignFirstResponder()
-        self.delegate?.isHeaderViewExpanded = status == .isSet
-        self.delegate?.tableView.beginUpdates()
-        self.setStatusButtonTopConstraint()
-        self.delegate?.tableView.endUpdates()
     }
     
     private func setStatusButtonEnabled() {
         let isEnabled = !(statusTextField.text == "") || status == .isGet
         self.setStatusButton.isEnabled = isEnabled
         self.setStatusButton.backgroundColor = isEnabled ? .systemBlue : .lightGray
+        self.statusTextField.enablesReturnKeyAutomatically = isEnabled
     }
 
     private func setStatusButtonTopConstraint() {
         NSLayoutConstraint.deactivate([statusButtonTopConstraint].compactMap({ $0 }))
         switch self.status {
         case .isGet:
-            self.statusButtonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.avatarImageView.bottomAnchor, constant: 16)
+            self.statusButtonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 132)
         case .isSet:
             self.statusButtonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.statusTextField.bottomAnchor, constant: 16)
         }
         NSLayoutConstraint.activate([self.statusButtonTopConstraint].compactMap({ $0 }))
+    }
+    
+    private func updateTableView() {
+        self.delegate?.isHeaderViewExpanded = status == .isSet
+        self.delegate?.tableView.beginUpdates()
+        self.setStatusButtonTopConstraint()
+        self.delegate?.tableView.endUpdates()
     }
 }
