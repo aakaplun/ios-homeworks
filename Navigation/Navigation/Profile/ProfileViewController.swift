@@ -25,8 +25,25 @@ final class ProfileViewController: UIViewController {
         return tableView
     }()
     
+    private func tableViewConstraints() -> [NSLayoutConstraint] {
+        let margins = self.view.safeAreaLayoutGuide
+        let topConstraint = self.tableView.topAnchor.constraint(equalTo: margins.topAnchor)
+        let bottomConstraint = self.tableView.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
+        let leadingConstraint = self.tableView.leadingAnchor.constraint(equalTo: margins.leadingAnchor)
+        let trailingConstraint = self.tableView.trailingAnchor.constraint(equalTo: margins.trailingAnchor)
+        return [topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]
+    }
+    
     var isHeaderViewExpanded = false
     
+    lazy var avatarView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    var collapseAvatarCode = {}
+
     lazy var posts: [Post] = {
         var posts = [Post]()
         posts.append(Post(autor: "Нетология. Меняем карьеру через образование",
@@ -49,20 +66,11 @@ final class ProfileViewController: UIViewController {
         
         self.view.backgroundColor = .white
         
-        self.view.addSubview(tableView)
-        let margins = self.view.safeAreaLayoutGuide
-        let topConstraint = tableView.topAnchor.constraint(equalTo: margins.topAnchor)
-        let bottomConstraint = tableView.bottomAnchor.constraint(equalTo: margins.bottomAnchor)
-        let leadingConstraint = tableView.leadingAnchor.constraint(equalTo: margins.leadingAnchor)
-        let trailingConstraint = tableView.trailingAnchor.constraint(equalTo: margins.trailingAnchor)
+        self.view.addSubview(self.tableView)
         
-        NSLayoutConstraint.activate([
-            topConstraint,
-            bottomConstraint,
-            leadingConstraint,
-            trailingConstraint
-        ])
+        let tableViewConstraints = self.tableViewConstraints()
         
+        NSLayoutConstraint.activate(tableViewConstraints)
     }
 }
 

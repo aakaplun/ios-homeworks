@@ -166,7 +166,12 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         guard gestureRecognizer.view === self else {
             guard gestureRecognizer.view === self.avatarImageView else {return}
             // Avatar tapped
-            print("Avatar tapped")
+            if statusTextField.isFirstResponder {
+                statusTextField.resignFirstResponder()
+                self.setStatusButtonEnabled()
+            }
+            self.avatarImageView.isHidden = true
+            delegate?.expandAvatar()
             return
         }
         // View tapped
@@ -219,14 +224,12 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }
 
     private func setStatusButtonTopConstraint() {
-        NSLayoutConstraint.deactivate([statusButtonTopConstraint].compactMap({ $0 }))
         switch self.status {
         case .isGet:
             self.statusButtonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 132)
         case .isSet:
             self.statusButtonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.statusTextField.bottomAnchor, constant: 16)
         }
-        NSLayoutConstraint.activate([self.statusButtonTopConstraint].compactMap({ $0 }))
     }
     
     private func updateTableView() {
