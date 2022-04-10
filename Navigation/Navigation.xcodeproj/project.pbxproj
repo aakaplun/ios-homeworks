@@ -24,6 +24,8 @@
 		6FE7DCE627C25645003AFF9B /* cat.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FE7DCE527C25645003AFF9B /* cat.png */; };
 		6FE7DCE827C2565A003AFF9B /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FE7DCE727C2565A003AFF9B /* logo.png */; };
 		6FE7DCEA27C25732003AFF9B /* UIColor+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7DCE927C25732003AFF9B /* UIColor+extension.swift */; };
+		6FF73B9D2801B9C800C6EAC9 /* CALayer+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF73B9C2801B9C800C6EAC9 /* CALayer+extension.swift */; };
+		6FF73BA02802BAE000C6EAC9 /* ProfileHeaderViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF73B9F2802BAE000C6EAC9 /* ProfileHeaderViewDelegate.swift */; };
 		E8870F6227F43D3300510983 /* AvatarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8870F6127F43D3300510983 /* AvatarView.swift */; };
 		E8D7C78127DF69B200FF3953 /* PhotosTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D7C78027DF69B200FF3953 /* PhotosTableViewCell.swift */; };
 		E8D7C78327DF69E600FF3953 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8D7C78227DF69E600FF3953 /* PhotosViewController.swift */; };
@@ -50,6 +52,8 @@
 		6FE7DCE527C25645003AFF9B /* cat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cat.png; path = Images/cat.png; sourceTree = SOURCE_ROOT; };
 		6FE7DCE727C2565A003AFF9B /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = Images/logo.png; sourceTree = SOURCE_ROOT; };
 		6FE7DCE927C25732003AFF9B /* UIColor+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+extension.swift"; sourceTree = "<group>"; };
+		6FF73B9C2801B9C800C6EAC9 /* CALayer+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+extension.swift"; sourceTree = "<group>"; };
+		6FF73B9F2802BAE000C6EAC9 /* ProfileHeaderViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderViewDelegate.swift; sourceTree = "<group>"; };
 		E8870F6127F43D3300510983 /* AvatarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarView.swift; sourceTree = "<group>"; };
 		E8D7C78027DF69B200FF3953 /* PhotosTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosTableViewCell.swift; sourceTree = "<group>"; };
 		E8D7C78227DF69E600FF3953 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
@@ -75,7 +79,6 @@
 				E8870F6127F43D3300510983 /* AvatarView.swift */,
 				6F8F3A7827B7F15A0009650F /* ProfileHeaderView.swift */,
 				6F401F9A27C244AE009643AC /* LogInViewController.swift */,
-				6FE7DCE927C25732003AFF9B /* UIColor+extension.swift */,
 				6FD3267C27C2817D00C48564 /* PaddingTextField.swift */,
 				6FE7DCE527C25645003AFF9B /* cat.png */,
 				6FE7DCE727C2565A003AFF9B /* logo.png */,
@@ -113,9 +116,20 @@
 				6F09238127B668E7006E5C14 /* InfoViewController.swift */,
 				6F9BD18527B5259500FA5793 /* LaunchScreen.storyboard */,
 				6F9BD18827B5259500FA5793 /* Info.plist */,
+				6FF73B9E2802BA7000C6EAC9 /* Protocols&Extensions */,
 				6F8F3A7727B7F1200009650F /* Profile */,
 			);
 			path = Navigation;
+			sourceTree = "<group>";
+		};
+		6FF73B9E2802BA7000C6EAC9 /* Protocols&Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				6FE7DCE927C25732003AFF9B /* UIColor+extension.swift */,
+				6FF73B9C2801B9C800C6EAC9 /* CALayer+extension.swift */,
+				6FF73B9F2802BAE000C6EAC9 /* ProfileHeaderViewDelegate.swift */,
+			);
+			path = "Protocols&Extensions";
 			sourceTree = "<group>";
 		};
 		E8D7C77F27DF696D00FF3953 /* Photos */ = {
@@ -211,11 +225,13 @@
 				E8D7C78127DF69B200FF3953 /* PhotosTableViewCell.swift in Sources */,
 				E8D7C78327DF69E600FF3953 /* PhotosViewController.swift in Sources */,
 				6F11E71927B53A3100FBF893 /* FeedViewController.swift in Sources */,
+				6FF73B9D2801B9C800C6EAC9 /* CALayer+extension.swift in Sources */,
 				6FE7DCEA27C25732003AFF9B /* UIColor+extension.swift in Sources */,
 				6F9BD17D27B5259400FA5793 /* SceneDelegate.swift in Sources */,
 				E8D7C78527DF6AD200FF3953 /* PhotosCollectionViewCell.swift in Sources */,
 				6F8F3A7927B7F15A0009650F /* ProfileHeaderView.swift in Sources */,
 				E8870F6227F43D3300510983 /* AvatarView.swift in Sources */,
+				6FF73BA02802BAE000C6EAC9 /* ProfileHeaderViewDelegate.swift in Sources */,
 				6F56587827D4C79D001AE1D2 /* PostTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

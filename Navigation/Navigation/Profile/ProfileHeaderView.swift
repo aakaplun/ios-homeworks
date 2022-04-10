@@ -10,7 +10,7 @@ import UIKit
 
 class ProfileHeaderView: UITableViewHeaderFooterView {
     
-    var delegate: ProfileViewController?
+    var delegate: ProfileHeaderViewDelegate?
 
     lazy var avatarImageView: UIImageView = {
         let photoView = UIImageView(image: #imageLiteral(resourceName: "cat.png"))
@@ -234,9 +234,9 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }
     
     private func updateTableView() {
-        self.delegate?.isHeaderViewExpanded = status == .isSet
-        self.delegate?.tableView.beginUpdates()
+        self.delegate?.setHeaderViewState(self.status)
+        self.delegate?.beginUpdates()
         self.setStatusButtonTopConstraint()
-        self.delegate?.tableView.endUpdates()
+        self.delegate?.endUpdates()
     }
 }

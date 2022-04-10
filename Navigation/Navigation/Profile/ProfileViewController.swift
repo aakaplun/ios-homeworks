@@ -34,7 +34,7 @@ final class ProfileViewController: UIViewController {
         return [topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]
     }
     
-    var isHeaderViewExpanded = false
+    private var isHeaderViewExpanded = false
     
     lazy var avatarView: UIView = {
         let view = UIView()
@@ -120,5 +120,19 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
             navController.pushViewController(photosViewController, animated: true)
         }
         tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+extension ProfileViewController: ProfileHeaderViewDelegate {
+    func setHeaderViewState(_ state: ProfileHeaderView.Status) {
+        self.isHeaderViewExpanded = state == .isSet
+    }
+    
+    func beginUpdates() {
+        self.tableView.beginUpdates()
+    }
+    
+    func endUpdates() {
+        self.tableView.endUpdates()
     }
 }

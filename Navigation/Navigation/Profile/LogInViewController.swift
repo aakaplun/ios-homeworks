@@ -44,7 +44,7 @@ final class LogInViewController: UIViewController {
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.autocapitalizationType = .none
-        textField.text = ""
+        textField.text = "ffff"
         textField.addTarget(self, action: #selector(self.textFieldEditingDidEndOnExit), for: .editingDidEndOnExit)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -174,6 +174,24 @@ final class LogInViewController: UIViewController {
     }
 
     @objc func loginButtonPressed(_ button: UIButton) {
+        if !self.loginTextField.hasText {
+            let color = self.loginTextField.backgroundColor
+            UIView.animate(withDuration: 0.5, animations: {
+                self.loginTextField.backgroundColor = .systemRed
+            }, completion: { _ in
+                UIView.animate(withDuration: 0.5, animations: {
+                    self.loginTextField.backgroundColor = color
+                }, completion: nil)
+            })
+            return
+        }
+        
+        if !self.passwordTextField.hasText {
+            self.passwordTextField.layer.animateBorder(with: .systemRed, width: 2)
+            
+            return
+        }
+        
         let profileViewController = ProfileViewController()
         profileViewController.modalPresentationStyle = .automatic
         self.present(profileViewController, animated: true, completion: nil)
