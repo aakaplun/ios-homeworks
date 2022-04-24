@@ -18,7 +18,7 @@ class PhotosViewController: UIViewController {
         return layout
     }()
 
-    private lazy var collectionView: UICollectionView = {
+    internal lazy var collectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.layout)
         collectionView.backgroundColor = .white
         collectionView.dataSource = self
@@ -28,7 +28,7 @@ class PhotosViewController: UIViewController {
         return collectionView
     }()
     
-    private lazy var images: [UIImage] = {
+    internal lazy var images: [UIImage] = {
         var images = [UIImage]()
         for i in 1...20 {
             let name = "Photo" + String(i)
@@ -38,6 +38,9 @@ class PhotosViewController: UIViewController {
         }
         return images
     }()
+    
+    internal var selectedCell: PhotosCollectionViewCell?
+    internal var selectedCellImageViewSnapshot: UIView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -56,25 +59,5 @@ class PhotosViewController: UIViewController {
         NSLayoutConstraint.activate([
             topConstraint, bottomConstraint, leadingConstraint, trailingConstraint
         ])
-    }
-}
-
-extension PhotosViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        self.images.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "PhotosCollectionViewCell", for: indexPath) as? PhotosCollectionViewCell else {
-            return UICollectionViewCell()
-        }
-        cell.setup(with: images[indexPath.row])
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let spacing = (collectionView.collectionViewLayout as? UICollectionViewFlowLayout)?.minimumInteritemSpacing ?? 0
-        let size = (self.collectionView.bounds.width - spacing * 2) / 3
-        return CGSize(width: size, height: size)
     }
 }

@@ -1,5 +1,5 @@
 //
-//  AvatarView.swift
+//  ProfileViewController+Avatar.swift
 //  Navigation
 //
 //  Created by Andrey Kaplun on 30/03/2022.
@@ -83,9 +83,11 @@ extension ProfileViewController {
             ] + semitransparentViewConstraints)
         
         self.avatarView.bringSubviewToFront(avatarImageView)
-        let closeButton = UIButton(type: .close)
+        let closeButton = UIButton()
+        closeButton.setImage(UIImage(systemName: "xmark.circle"), for: .normal)
+        closeButton.tintColor = .systemBackground
+        closeButton.setPreferredSymbolConfiguration(UIImage.SymbolConfiguration(pointSize: 40), forImageIn: .normal)
         closeButton.alpha = 0
-        closeButton.setTitleColor(.systemBlue, for: .normal)
         closeButton.addTarget(self, action: #selector(self.closeButtonTapped), for: .touchUpInside)
         closeButton.translatesAutoresizingMaskIntoConstraints = false
         avatarImageView.addSubview(closeButton)

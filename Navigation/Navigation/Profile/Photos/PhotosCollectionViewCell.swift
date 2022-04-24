@@ -10,7 +10,7 @@ import UIKit
 
 class PhotosCollectionViewCell: UICollectionViewCell {
     
-    private lazy var imageView: UIImageView = {
+    var imageView: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -41,5 +41,17 @@ class PhotosCollectionViewCell: UICollectionViewCell {
     
     func setup(with image: UIImage) {
         self.imageView.image = image
+    }
+    
+    func setSingleTapGesture(_ tapGesture: UITapGestureRecognizer) {
+        tapGesture.numberOfTouchesRequired = 1
+        self.addGestureRecognizer(tapGesture)
+        
+        for number in 2...5 {
+            let gesture = UITapGestureRecognizer()
+            gesture.numberOfTapsRequired = number
+            self.addGestureRecognizer(gesture)
+            tapGesture.require(toFail: gesture)
+        }
     }
 }

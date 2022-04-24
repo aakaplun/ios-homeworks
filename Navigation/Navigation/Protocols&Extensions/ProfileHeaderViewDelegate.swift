@@ -9,7 +9,7 @@
 import UIKit
 
 protocol ProfileHeaderViewDelegate: AnyObject {
-    func setHeaderViewState(_ state: ProfileHeaderView.Status)
+    func setHeaderViewHeight(_ height: CGFloat)
     func beginUpdates()
     func endUpdates()
     func expandAvatar()

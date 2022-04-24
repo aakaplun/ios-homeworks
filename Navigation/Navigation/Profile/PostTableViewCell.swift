@@ -107,15 +107,28 @@ class PostTableViewCell: UITableViewCell {
             + likesLabelConstraints
             + viewsLabelConstraints
         )
-                
     }
-
+    
+    func setGestures(_ likeTapGesture: UITapGestureRecognizer, _ imageTapGesture: UITapGestureRecognizer, for indexPath: IndexPath) {
+        self.likesLabel.tag = indexPath.row
+        self.likesLabel.isUserInteractionEnabled = true
+        self.likesLabel.addGestureRecognizer(likeTapGesture)
+        
+        self.postImageView.tag = indexPath.row
+        self.postImageView.isUserInteractionEnabled = true
+        self.postImageView.addGestureRecognizer(imageTapGesture)
+    }
+    
     func setup(with post: Post) {
         self.autorLabel.text = post.autor
         self.postImageView.image = UIImage(named: post.image)
         self.descriptionLabel.text = post.description
-        self.likesLabel.text = "Likes: " + String(post.likes)
+        self.setLikes(to: post.likes)
         self.viewsLabel.text = "Views: " + String(post.views)
+    }
+    
+    func setLikes(to number: Int) {
+        self.likesLabel.text = "Likes: \(number)"
     }
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -132,12 +145,6 @@ class PostTableViewCell: UITableViewCell {
         // Initialization code
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-
-        // Configure the view for the selected state
-    }
-    
     override func prepareForReuse() {
         super.prepareForReuse()
         

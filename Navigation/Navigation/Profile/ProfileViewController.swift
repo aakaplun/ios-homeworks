@@ -10,7 +10,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    lazy var tableView: UITableView = {
+    internal lazy var tableView: UITableView = {
         let tableView = UITableView()
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 44
@@ -34,9 +34,9 @@ final class ProfileViewController: UIViewController {
         return [topConstraint, bottomConstraint, leadingConstraint, trailingConstraint]
     }
     
-    private var isHeaderViewExpanded = false
+    private var headerViewHeaderHeight: CGFloat = 198
     
-    lazy var avatarView: UIView = {
+    internal lazy var avatarView: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -44,13 +44,14 @@ final class ProfileViewController: UIViewController {
     
     var collapseAvatarCode = {}
 
-    lazy var posts: [Post] = {
+    internal lazy var posts: [Post] = {
         var posts = [Post]()
         posts.append(Post(autor: "Нетология. Меняем карьеру через образование",
                           description: "В Медиа рассказали, когда нужен и как работает судебный PR, какие каналы используют специалисты и с какими заблуждениями сталкиваются → https://netolo.gy/hHV",
                           image: "Netology1", likes: 100, views: 500))
         posts.append(Post(autor: "Нетология. Меняем карьеру через образование",
-                          description: "14 марта стартует бесплатный курс «Основы вёрстки сайта». HTML и CSS — служат основой каждого сайта, соцсети или интернет-магазина, которыми мы пользуемся каждый день. Знать их полезно не только веб-разработчикам, но и всем, кто работает с вебом — дизайнерам, контент-менеджерам, интернет-маркетологам и руководителям проектов. На курсе вы выполните 16 практических заданий и научитесь самостоятельно вносить изменения в HTML-код, верстать с нуля текстовые блоки, менять внешний вид отдельных элементов сайта с помощью CSS, а также готовить контент для публикации на сайте. Регистрируйтесь → https://netolo.gy/hHL",
+                          description: "14 марта стартует бесплатный курс «Основы вёрстки сайта». HTML и CSS — служат основой каждого сайта, соцсети или интернет-магазина, которыми мы пользуемся каждый день. Знать их полезно не только веб-разработчикам, но и всем, кто работает с вебом — дизайнерам, контент-менеджерам, интернет-маркетологам и руководителям проектов. На курсе вы выполните 16 практических заданий и научитесь самостоятельно вносить изменения в HTML-код, верстать с нуля текстовые блоки, менять внешний вид отдельных элементов сайта с помощью CSS, а также готовить контент для публикации на сайте. Регистрируйтесь → https://netolo.gy/hHL" +
+                          "14 марта стартует бесплатный курс «Основы вёрстки сайта». HTML и CSS — служат основой каждого сайта, соцсети или интернет-магазина, которыми мы пользуемся каждый день. Знать их полезно не только веб-разработчикам, но и всем, кто работает с вебом — дизайнерам, контент-менеджерам, интернет-маркетологам и руководителям проектов. На курсе вы выполните 16 практических заданий и научитесь самостоятельно вносить изменения в HTML-код, верстать с нуля текстовые блоки, менять внешний вид отдельных элементов сайта с помощью CSS, а также готовить контент для публикации на сайте. Регистрируйтесь → https://netolo.gy/hHL",
                           image: "Netology2"))
         posts.append(Post(autor: "Нетология. Меняем карьеру через образование",
                           description: "🚀 Запустили бесплатный курс «Аналитика для начинающих интернет-маркетологов». Веб-аналитика помогает правильно выбрать каналы продвижения, а после рекламной кампании ― сделать выводы и оптимизировать расходы. Курс состоит из коротких уроков и практических кейсов, чтобы учиться было интересно и знания лучше усваивались. Вы увидите, как работает аналитика в действии и как можно развивать проект или продукт при помощи данных. Записывайтесь, начать можно в любое удобное время → https://netolo.gy/hHb",
@@ -96,8 +97,32 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         }
         let post = self.posts[indexPath.row]
         cell.setup(with: post)
+        let likeTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.addLike))
+        let imageTapGesture = UITapGestureRecognizer(target: self, action: #selector(self.showPost))
+        cell.setGestures(likeTapGesture, imageTapGesture, for: indexPath)
+        cell.selectionStyle = .none
         
         return cell
+    }
+
+    @objc private func addLike(sender: UITapGestureRecognizer) {
+        guard let label = sender.view as? UILabel else { return }
+        self.posts[label.tag].likes += 1
+        let indexPath = IndexPath(row: label.tag, section: 1)
+        self.tableView.reloadRows(at: [indexPath], with: .none)
+    }
+    
+    @objc private func showPost(sender: UITapGestureRecognizer) {
+        guard let image = sender.view as? UIImageView else { return }
+        
+        let detailViewController = DetailViewController()
+        detailViewController.setup(with: self.posts[image.tag])
+        detailViewController.view.backgroundColor = .white
+        self.present(detailViewController, animated: true) {
+            let indexPath = IndexPath(row: image.tag, section: 1)
+            self.posts[image.tag].views += 1
+            self.tableView.reloadRows(at: [indexPath], with: .none)
+        }
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
@@ -111,7 +136,7 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         if section > 0 {return 0}
-        return self.isHeaderViewExpanded ? 230 : 198
+        return self.headerViewHeaderHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -121,11 +146,15 @@ extension ProfileViewController: UITableViewDelegate, UITableViewDataSource {
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }
+    
+    func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == 0
+    }
 }
 
 extension ProfileViewController: ProfileHeaderViewDelegate {
-    func setHeaderViewState(_ state: ProfileHeaderView.Status) {
-        self.isHeaderViewExpanded = state == .isSet
+    func setHeaderViewHeight(_ height: CGFloat) {
+        self.headerViewHeaderHeight = height
     }
     
     func beginUpdates() {

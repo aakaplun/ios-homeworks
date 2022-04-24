@@ -42,7 +42,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     
     lazy var statusTextField: PaddingTextField = {
         let statusField = PaddingTextField()
-        statusField.placeholder = "Введите текст"
+        statusField.placeholder = "Enter text"
         statusField.backgroundColor = .white
         statusField.font = UIFont.systemFont(ofSize: 15)
         statusField.textColor = .black
@@ -59,6 +59,16 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         statusField.addTarget(self, action: #selector(statusFieldTextChanged), for: .editingChanged)
         statusField.addTarget(self, action: #selector(statusFieldEditingDidEndOnExit), for: .editingDidEndOnExit)
         return statusField
+    }()
+    
+    lazy var warningLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Status can't be empty"
+        label.font = UIFont.systemFont(ofSize: 14)
+        label.textColor = .systemRed
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.isHidden = true
+        return label
     }()
     
     lazy var setStatusButton: UIButton = {
@@ -79,20 +89,25 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     enum Status {
         case isGet
         case isSet
+        
+        var isExpanded: Bool {
+            return self == .isSet
+        }
     }
     
     private var status: Status = .isGet {
         didSet {
             setStatusButton.setTitle(statusButtonText, for: .normal)
             statusTextField.isHidden = status == .isGet
+            if !self.warningLabel.isHidden { self.warningLabel.isHidden.toggle() }
         }
     }
     
     private var statusButtonText: String {
         switch status {
-        case Status.isGet:
+        case .isGet:
             return "Get status"
-        case Status.isSet:
+        case .isSet:
             return "Set status"
         }
     }
@@ -115,6 +130,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         self.addSubview(fullNameLabel)
         self.addSubview(statusLabel)
         self.addSubview(statusTextField)
+        self.addSubview(self.warningLabel)
         self.addSubview(setStatusButton)
         
         self.status = .isGet
@@ -139,6 +155,10 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
         let statusFieldLeadingConstraint = statusTextField.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 136)
         let statusFieldTrailingConstraint = statusTextField.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: -16)
  
+        let warningLabelTopConstraint = self.warningLabel.topAnchor.constraint(equalTo: self.statusTextField.bottomAnchor, constant: 16)
+        let warningLabelLeadingConstraint = self.warningLabel.leadingAnchor.constraint(equalTo: margins.leadingAnchor, constant: 136)
+        let warningLabelTrailingConstraint = self.warningLabel.trailingAnchor.constraint(equalTo: margins.trailingAnchor, constant: 16)
+
         let statusButtonHeightConstraint = setStatusButton.heightAnchor.constraint(equalToConstant: 50)
         let statusButtonBottonConstraint = setStatusButton.bottomAnchor.constraint(equalTo: margins.bottomAnchor, constant: -16)
         statusButtonBottonConstraint.priority = .defaultLow
@@ -151,6 +171,7 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
                                      statusLabelLeadingConstraint, statusLabelTopAncor, statusLabelTrailingConstraint,
                                      statusFieldHeightConstraint, statusFieldTopConstraint,
                                      statusFieldLeadingConstraint, statusFieldTrailingConstraint,
+                                     warningLabelTopConstraint, warningLabelLeadingConstraint, warningLabelTrailingConstraint,
                                      statusButtonHeightConstraint, statusButtonBottonConstraint,
                                      statusButtonLeadingConstraint, statusButtonTrailingConstraint
             ].compactMap({ $0 }))
@@ -182,25 +203,40 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }
     
     @objc func statusButtonPressed(_ button: UIButton) {
-        switch status {
-        case .isSet:
-            statusTextField.resignFirstResponder()
-        case .isGet:
-            statusTextField.becomeFirstResponder()
+        if self.status == .isGet {
+            self.statusTextField.becomeFirstResponder()
+            return
         }
+        
+        guard let text = self.statusTextField.text else {
+            return
+        }
+        
+        if text.isEmpty {
+            self.showWarning()
+            return
+        }
+        
+        self.statusTextField.resignFirstResponder()
+    }
+    
+    private func showWarning(isShow: Bool = true) {
+        if isShow, !self.warningLabel.isHidden { return }
+        self.warningLabel.isHidden = !isShow
+        self.updateTableView()
     }
     
     // statusField Actions
     @objc func statusFieldDidBeginEditing(_ textField: UITextField) {
         self.status = .isSet
         self.setStatusButtonEnabled()
+        if let text = textField.text, !text.isEmpty, !self.warningLabel.isHidden { self.showWarning(isShow: false) }
         self.updateTableView()
     }
     
     @objc func statusFieldDidEndEditing(_ textField: UITextField) {
         if let text = textField.text, !text.isEmpty {
             self.statusText = text
-            //textField.text = ""
             self.statusLabel.text = text
         }
         self.status = .isGet
@@ -209,8 +245,13 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
 
     @objc func statusFieldTextChanged(_ textField: UITextField) {
         self.setStatusButtonEnabled()
-        statusText = textField.text ?? ""
-        textField.enablesReturnKeyAutomatically = textField.text != ""
+        guard let text = textField.text else { return }
+        //statusText = textField.text ?? ""
+        textField.enablesReturnKeyAutomatically = !text.isEmpty
+        if !self.warningLabel.isHidden, !text.isEmpty {
+            self.warningLabel.isHidden.toggle()
+            self.updateTableView()
+        }
     }
 
     @objc func statusFieldEditingDidEndOnExit(_ textField: UITextField) {
@@ -218,23 +259,30 @@ class ProfileHeaderView: UITableViewHeaderFooterView {
     }
     
     private func setStatusButtonEnabled() {
-        let isEnabled = !(statusTextField.text == "") || status == .isGet
-        self.setStatusButton.isEnabled = isEnabled
+        guard let text = self.statusTextField.text else { return }
+        let isEnabled = !text.isEmpty || status == .isGet
         self.setStatusButton.backgroundColor = isEnabled ? .systemBlue : .lightGray
         self.statusTextField.enablesReturnKeyAutomatically = isEnabled
     }
 
     private func setStatusButtonTopConstraint() {
+        if !self.warningLabel.isHidden {
+            self.statusButtonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.warningLabel.bottomAnchor, constant: 16)
+            self.delegate?.setHeaderViewHeight(262)
+            return
+        }
+        
         switch self.status {
         case .isGet:
             self.statusButtonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.safeAreaLayoutGuide.topAnchor, constant: 132)
+            self.delegate?.setHeaderViewHeight(198)
         case .isSet:
             self.statusButtonTopConstraint = self.setStatusButton.topAnchor.constraint(equalTo: self.statusTextField.bottomAnchor, constant: 16)
+            self.delegate?.setHeaderViewHeight(230)
         }
     }
     
     private func updateTableView() {
-        self.delegate?.setHeaderViewState(self.status)
         self.delegate?.beginUpdates()
         self.setStatusButtonTopConstraint()
         self.delegate?.endUpdates()
