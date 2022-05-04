@@ -57,7 +57,7 @@ final class TransitionViewController: UIViewController {
         return button
     }()
 
-    var closeButtonConstraints: [NSLayoutConstraint] {
+    private var closeButtonConstraints: [NSLayoutConstraint] {
         let topConstraint = self.closeButton.topAnchor.constraint(equalTo: self.imageView.topAnchor)
         let trailingConstraint = self.closeButton.trailingAnchor.constraint(equalTo: self.imageView.trailingAnchor)
         return [topConstraint, trailingConstraint]
