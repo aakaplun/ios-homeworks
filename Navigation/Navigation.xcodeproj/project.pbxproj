@@ -22,7 +22,6 @@
 		6F9BD18F27B527E300FA5793 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F9BD18E27B527E300FA5793 /* TabViewController.swift */; };
 		6FA182E7280B004D00F744E8 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FA182E6280B004D00F744E8 /* DetailViewController.swift */; };
 		6FD3267D27C2817D00C48564 /* PaddingTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FD3267C27C2817D00C48564 /* PaddingTextField.swift */; };
-		6FE7DCE627C25645003AFF9B /* cat.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FE7DCE527C25645003AFF9B /* cat.png */; };
 		6FE7DCE827C2565A003AFF9B /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = 6FE7DCE727C2565A003AFF9B /* logo.png */; };
 		6FE7DCEA27C25732003AFF9B /* UIColor+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FE7DCE927C25732003AFF9B /* UIColor+extension.swift */; };
 		6FF73B9D2801B9C800C6EAC9 /* CALayer+extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FF73B9C2801B9C800C6EAC9 /* CALayer+extension.swift */; };
@@ -55,7 +54,6 @@
 		6F9BD18E27B527E300FA5793 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		6FA182E6280B004D00F744E8 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		6FD3267C27C2817D00C48564 /* PaddingTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddingTextField.swift; sourceTree = "<group>"; };
-		6FE7DCE527C25645003AFF9B /* cat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = cat.png; path = Images/cat.png; sourceTree = SOURCE_ROOT; };
 		6FE7DCE727C2565A003AFF9B /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = logo.png; path = Navigation/Login/logo.png; sourceTree = SOURCE_ROOT; };
 		6FE7DCE927C25732003AFF9B /* UIColor+extension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIColor+extension.swift"; sourceTree = "<group>"; };
 		6FF73B9C2801B9C800C6EAC9 /* CALayer+extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CALayer+extension.swift"; sourceTree = "<group>"; };
@@ -103,7 +101,6 @@
 		6F8F3A7727B7F1200009650F /* Profile */ = {
 			isa = PBXGroup;
 			children = (
-				6FE7DCE527C25645003AFF9B /* cat.png */,
 				6F56587927D4CC97001AE1D2 /* Post.swift */,
 				6F11E71A27B53A4500FBF893 /* ProfileViewController.swift */,
 				E8870F6127F43D3300510983 /* ProfileViewController+Avatar.swift */,
@@ -233,7 +230,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FE7DCE827C2565A003AFF9B /* logo.png in Resources */,
-				6FE7DCE627C25645003AFF9B /* cat.png in Resources */,
 				6F9BD18727B5259500FA5793 /* LaunchScreen.storyboard in Resources */,
 				6F9BD18427B5259500FA5793 /* Assets.xcassets in Resources */,
 			);
