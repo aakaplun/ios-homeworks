@@ -32,9 +32,10 @@ class TabViewController: UITabBarController {
     
     private func setupViewController() {
           viewControllers = [
-            createNavController(for: LogInViewController(), title: "Login", image: UIImage(systemName: "lock.fill")!),
-            //createNavController(for: FeedViewController(), title: "Feed", image: UIImage(systemName: "house.fill")!),
-            createNavController(for: ProfileViewController(), title: "Profile", image: UIImage(systemName: "person.fill")!)
+            //createNavController(for: LogInViewController(), title: "Login", image: UIImage(systemName: "lock.fill")!),
+            createNavController(for: FeedViewController(), title: "Feed", image: UIImage(systemName: "house.fill")!),
+            createNavController(for: LogInViewController(), title: "Profile", image: UIImage(systemName: "person.fill")!)
+            //createNavController(for: ProfileViewController(), title: "Profile", image: UIImage(systemName: "person.fill")!)
           ]
       }
 
