@@ -42,6 +42,8 @@ class PhotosViewController: UIViewController {
     internal var selectedCell: PhotosCollectionViewCell?
     internal var selectedCellImageViewSnapshot: UIView?
     
+    private lazy var barIsHidden: Bool = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -59,5 +61,18 @@ class PhotosViewController: UIViewController {
         NSLayoutConstraint.activate([
             topConstraint, bottomConstraint, leadingConstraint, trailingConstraint
         ])
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        guard let navController = navigationController else { return }
+        self.barIsHidden = navController.navigationBar.isHidden
+        navController.navigationBar.isHidden = false
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        guard let navController = navigationController else { return }
+        navController.navigationBar.isHidden = self.barIsHidden
     }
 }

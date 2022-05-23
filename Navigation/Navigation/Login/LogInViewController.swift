@@ -44,7 +44,7 @@ final class LogInViewController: UIViewController {
         textField.returnKeyType = UIReturnKeyType.done
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.autocapitalizationType = .none
-        textField.text = ""
+        textField.text = self.defaultLogin
         textField.addTarget(self, action: #selector(self.textFieldEditingDidEndOnExit), for: .editingDidEndOnExit)
         textField.translatesAutoresizingMaskIntoConstraints = false
         return textField
@@ -64,7 +64,7 @@ final class LogInViewController: UIViewController {
         textField.clearButtonMode = UITextField.ViewMode.whileEditing
         textField.autocapitalizationType = .none
         textField.isSecureTextEntry = true
-        textField.text = ""
+        textField.text = self.defualtPassword
         textField.addTarget(self, action: #selector(self.textFieldEditingDidEndOnExit), for: .editingDidEndOnExit)
         textField.addTarget(self, action: #selector(self.textFieldEditingChanged), for: .editingChanged)
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -230,7 +230,8 @@ final class LogInViewController: UIViewController {
         
         let profileViewController = ProfileViewController()
         profileViewController.modalPresentationStyle = .automatic
-        self.present(profileViewController, animated: true, completion: nil)
+        guard let navController = navigationController else { return }
+        navController.pushViewController(profileViewController, animated: true)
     }
     
     private func registerForNotifications() {
